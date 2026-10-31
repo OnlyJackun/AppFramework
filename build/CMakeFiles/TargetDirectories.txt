@@ -1,0 +1,2 @@
+D:/Files/AppFramework/build/CMakeFiles/edit_cache.dir
+D:/Files/AppFramework/build/CMakeFiles/rebuild_cache.dir
