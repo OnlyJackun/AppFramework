@@ -9,12 +9,12 @@ class Module: public IModule
 {
     public:
         // 由parent调用, 初始化/销毁自身及子节点
-        void Init(IServiceRegistry* r) final override{
-            OnInit(r);
+        void Init() final override{
+            OnInit();
             auto s = servicesRegistry_.get();
             for(auto &mod : mods_)
             {
-                mod->Init(s);
+                mod->Init();
             }
             OnReady();
         }
@@ -32,22 +32,24 @@ class Module: public IModule
         T* RegisterModule(Args...args){
             static_assert(std::is_base_of(Module, T))
             auto mod = std::make_unique<T>(std::forwards<Args>(args))
-            mod->parent_ = this;
+            mod->parent_ = thist
             T* raw = mod.get();
             mods_.push_back(std::move(mod));
             return raw;
         }
 
-
+        IServiceRegistry* GetServiceRegistry() final override{
+            return servicesRegistry_.get();
+        }
         
     protected:
         // 自身的初始化与销毁, 及子节点就绪后的回调
-        virtual void OnInit(IServiceRegistry* r) = 0;
+        virtual void OnInit() = 0;
         virtual void OnReady() = 0;
         virtual void OnShutdown() = 0;
 
     private:
-        Module* parent = nullptr;
+        const Module* parent_ = nullptr;
         std::vector<std::unique_ptr<Module>> mods_;
         std::unique_ptr<IServiceRegistry> servicesRegistry_;
 };

@@ -1,13 +1,20 @@
 #pragma once
 #ifndef IMODULE_H
-#define IMODULE_H
-#include<IServiceRegistry.h>
-// IModule只负责跨DLL加载模块时parent调用的方法的链接地址, 其余服务&自初始化等方法归Module负责
-class IModule
-{
-    public:
-        virtual ~IModule() = default;
-        virtual void Init(IServiceRegistry* r) = 0;
-        virtual void Shutdown() = 0;
-};
+    #define IMODULE_H
+
+    #include<memory>
+    #include<IService.h>
+    #include<IServiceRegistry.h>
+    // IModule只涵盖对外提供的方法, 自初始化&模版函数由基类实现
+    class IModule
+    {
+        public:
+            virtual ~IModule() = default;
+            // module生命周期
+            virtual void Init() = 0;
+            virtual void Shutdown() = 0;
+            // 服务
+            virtual IServiceRegistry* GetServiceRegistry() = 0;
+    };
+    
 #endif

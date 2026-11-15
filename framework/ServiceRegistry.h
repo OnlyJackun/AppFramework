@@ -8,7 +8,7 @@
 class ServiceRegistry: public IServiceRegistry
 {
     public:
-        std::shared_ptr<IService> GetService(char name) final override{
+        std::shared_ptr<IService> GetService(const char* name) final override{
             std::shared_ptr<IService> s = services_.find(name)->second.lock();
             if(!s)
             {
@@ -22,5 +22,5 @@ class ServiceRegistry: public IServiceRegistry
         }
 
     private:
-        std::unordered_map<char, std::weak_ptr<IService>> services_;
+        std::unordered_map<const char*, std::weak_ptr<IService>> services_;
 };

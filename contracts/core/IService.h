@@ -5,6 +5,6 @@ class IService
 {
     public:
         // 自己去ServiceId里找
-        virtual char GetName() = 0;
+        virtual const char* GetName() = 0;
 };
 #endif
