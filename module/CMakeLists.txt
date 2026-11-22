@@ -1,1 +1,1 @@
-add_library(Module)
+add_library(module)
